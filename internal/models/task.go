@@ -1,12 +1,11 @@
 package models
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
-	"encoding/json"
+	"path/filepath"
 )
-
-var newTaskId = 0
 
 type Task struct {
 	Id        int    `json:"id"`
@@ -15,6 +14,7 @@ type Task struct {
 }
 
 type TaskList struct {
+	Id    int
 	Name  string
 	Tasks []Task
 }
@@ -37,23 +37,27 @@ func (tl *TaskList) AddTask(t *Task) {
 }
 
 func (tl *TaskList) SaveFile() {
-	os.WriteFile(fmt.Sprintf("./%s.json", tl.Name), tl.Json(), os.ModePerm)
+	os.Mkdir("storage", os.ModePerm)
+	path := filepath.Join("storage", fmt.Sprintf("%s.json", tl.Name))
+	os.WriteFile(path, tl.Json(), 0644)
 }
 
 func NewTaskList(name string) *TaskList {
+	// TODO: increment id
 	return &TaskList{
+		Id: 0,
 		Name: name,
 		Tasks: nil,
 	}
 }
 
 func NewTask(list *TaskList, name string) *Task {
+	// TODO: increment id
 	task := &Task{
-		Id: newTaskId,
+		Id: 0,
 		Name: name,
 		Completed: false,
 	}
 	list.AddTask(task)
-	newTaskId++
 	return task
 }

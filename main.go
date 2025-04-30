@@ -5,7 +5,9 @@ import(
 )
 
 func main() {
-	models.NewTaskList("oi")
+	list := models.NewTaskList("list")
+	models.NewTask(list, "task")
+	list.SaveFile()
 }
 
 
