@@ -15,16 +15,17 @@ func TestNewTaskList(t *testing.T) {
 		t.Errorf("Expected Task List length to be 0, it is: %v", len(list.Tasks))
 	}
 
-	// TODO: Test Id
+	if list.Id != 0 {
+		t.Errorf("Expected Task List id to be 0, it is: %v", list.Id)
+	}
 }
 
 func TestNewTask(t *testing.T) {
 	list := NewTaskList("list")
-
 	task := NewTask(list, "task")
 
 	if task.Name != "task" {
-		t.Errorf("Expected Task name to be task, it is: %s", list.Name)
+		t.Errorf("Expected Task name to be task, it is: %s", task.Name)
 	}
 
 	if task.Completed {
@@ -32,9 +33,11 @@ func TestNewTask(t *testing.T) {
 	}
 
 	if list.Tasks[0] != *task {
-		t.Errorf("Expected task to be added to the given list")
+		t.Errorf("Expected Task to be added to the given list")
 	}
 
-	// TODO: Test Id
+	if task.Id != 0 {
+		t.Errorf("Expected Task id to be 0, it is: %v", task.Id)
+	}
 }
 
