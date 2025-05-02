@@ -9,6 +9,9 @@ import (
 	"strings"
 )
 
+var taskId int
+var taskListId int
+
 type Task struct {
 	Id        int    `json:"id"`
 	Name      string `json:"name"`
@@ -22,6 +25,7 @@ type TaskList struct {
 }
 
 var TaskLists []*TaskList
+var Tasks []*Task
 
 func (t *Task) MarkAsCompleted() {
 	t.Completed = true
@@ -47,23 +51,30 @@ func (tl *TaskList) SaveFile() {
 }
 
 func NewTaskList(name string) *TaskList {
-	// TODO: increment id
-	return &TaskList{
-		Id: 0,
+	tl := &TaskList{
+		Id: taskListId,
 		Name: name,
 		Tasks: nil,
 	}
+	taskListId++
+	
+	TaskLists = append(TaskLists, tl)
+
+	return tl
 }
 
 func NewTask(list *TaskList, name string) *Task {
-	// TODO: increment id
-	task := &Task{
-		Id: 0,
+	t := &Task{
+		Id: taskId,
 		Name: name,
 		Completed: false,
 	}
-	list.AddTask(task)
-	return task
+	taskId++
+	
+	Tasks = append(Tasks, t)
+	
+	list.AddTask(t)
+	return t
 }
 
 func LoadTaskLists() []*TaskList {
@@ -93,11 +104,18 @@ func LoadTaskLists() []*TaskList {
 			continue
 		}
 
-		TaskLists = append(TaskLists, tl)
+		for j := range tl.Tasks {
+			Tasks = append(Tasks, &tl.Tasks[j])
+		}
 	}
-
+	
+	taskListId = len(TaskLists)
+	taskId = len(Tasks)
+	
 	return TaskLists
 }
+
+
 
 func ListTaskLists() {
 	fmt.Println("-- Task Lists --")
@@ -111,4 +129,9 @@ func ListTaskLists() {
 	for i, tl := range TaskLists {
 		fmt.Printf("%v - %s\n", i + 1, tl.Name)
 	}
+}
+
+func ListTasks() {
+	fmt.Println("-- Tasks --")
+	fmt.Println("-----------")
 }
