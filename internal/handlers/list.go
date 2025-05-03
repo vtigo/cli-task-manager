@@ -5,7 +5,7 @@ import (
 	"github.com/vtigo/cli-task-manager/internal/models"
 )
 
-func ListTaskLists() {
+func HandleListTaskLists() {
 	fmt.Println("-- Task Lists --")
 	fmt.Println("----------------")
 
@@ -16,5 +16,14 @@ func ListTaskLists() {
 
 	for i, tl := range models.TaskLists {
 		fmt.Printf("%v - %s\n", i + 1, tl.Name)
+	}
+}
+
+func HandleListTasks() {
+	fmt.Println("-- Tasks --")
+	fmt.Println("-----------")
+
+	for i, t := range models.Tasks {
+		fmt.Printf("%v - %s\n", i + 1, t.Name)
 	}
 }

@@ -88,17 +88,3 @@ func LoadTaskLists() []*TaskList {
 	
 	return TaskLists
 }
-
-func ListTaskLists() {
-	fmt.Println("-- Task Lists --")
-	fmt.Println("----------------")
-
-	if len(TaskLists) == 0 {
-		fmt.Println("No Task Lists found")
-		return
-	}
-
-	for i, tl := range TaskLists {
-		fmt.Printf("%v - %s\n", i + 1, tl.Name)
-	}
-}

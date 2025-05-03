@@ -1,9 +1,5 @@
 package models
 
-import (
-	"fmt"
-)
-
 var taskId int
 var Tasks []*Task
 
@@ -31,11 +27,3 @@ func NewTask(list *TaskList, name string) *Task {
 	return t
 }
 
-func ListTasks() {
-	fmt.Println("-- Tasks --")
-	fmt.Println("-----------")
-
-	for i, t := range Tasks {
-		fmt.Printf("%v - %s\n", i + 1, t.Name)
-	}
-}
