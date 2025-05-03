@@ -3,21 +3,18 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
-var taskListId int
+var TaskListId int
+var TaskLists []*TaskList
 
 type TaskList struct {
 	Id    int
 	Name  string
 	Tasks []Task
 }
-
-var TaskLists []*TaskList
 
 func (tl *TaskList) Json() []byte {
 	jsonBytes, err := json.Marshal(tl)
@@ -40,51 +37,13 @@ func (tl *TaskList) SaveFile() {
 
 func NewTaskList(name string) *TaskList {
 	tl := &TaskList{
-		Id: taskListId,
+		Id: TaskListId,
 		Name: name,
 		Tasks: nil,
 	}
-	taskListId++
+	TaskListId++
 	
 	TaskLists = append(TaskLists, tl)
 
 	return tl
-}
-
-func LoadTaskLists() []*TaskList {
-	TaskLists = []*TaskList{}
-
-	root := os.DirFS("./storage")
-	taskListFiles, err := fs.Glob(root, "*.json")
-	if err != nil {
-		fmt.Println("Failed to read storage directory")
-		return TaskLists
-	}
-
-	for i := range taskListFiles {
-		path := filepath.Join("storage", taskListFiles[i])
-		file, err := os.ReadFile(path)
-		if err != nil {
-			fmt.Println("failed to read file:", err)
-			continue
-		}
-	
-		name := strings.Split(taskListFiles[i], ".")[0]
-		tl := NewTaskList(name)
-
-		err = json.Unmarshal(file, &tl)
-		if err != nil {
-			fmt.Println("failed to unmarshal task list:", err)
-			continue
-		}
-
-		for j := range tl.Tasks {
-			Tasks = append(Tasks, &tl.Tasks[j])
-		}
-	}
-	
-	taskListId = len(TaskLists)
-	taskId = len(Tasks)
-	
-	return TaskLists
 }

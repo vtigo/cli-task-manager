@@ -1,6 +1,8 @@
 package models
 
-var taskId int
+import "fmt"
+
+var TaskId int
 var Tasks []*Task
 
 type Task struct {
@@ -14,12 +16,17 @@ func (t *Task) MarkAsCompleted() {
 }
 
 func NewTask(list *TaskList, name string) *Task {
+	if list == nil {
+		fmt.Println("Task List do not exist.")
+		return &Task{}
+	}
+
 	t := &Task{
-		Id: 0,
+		Id: TaskId,
 		Name: name,
 		Completed: false,
 	}
-	taskId++
+	TaskId++
 	
 	Tasks = append(Tasks, t)
 	list.AddTask(t)

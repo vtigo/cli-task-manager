@@ -22,8 +22,18 @@ func HandleListTaskLists() {
 func HandleListTasks() {
 	fmt.Println("-- Tasks --")
 	fmt.Println("-----------")
+	
+	cmpString := "[X]"
+	notCmpString := "[ ]"
+	
+	var statusString string
 
-	for i, t := range models.Tasks {
-		fmt.Printf("%v - %s\n", i + 1, t.Name)
+	for i, t := range models.Tasks { 
+		if t.Completed {
+			statusString = cmpString
+		} else {
+			statusString = notCmpString
+		}
+		fmt.Printf("%v) %s %s\n", i + 1, statusString, t.Name)
 	}
 }
