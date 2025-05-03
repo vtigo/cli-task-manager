@@ -1,11 +1,13 @@
-package models
+package tests
 
 import (
 	"testing"
+
+	"github.com/vtigo/cli-task-manager/internal/models"
 )
 
 func TestNewTaskList(t *testing.T) {
-	list := NewTaskList("list")
+	list := models.NewTaskList("list")
 
 	if list.Name != "list" {
 		t.Errorf("Expected Task List name to be list, it is: %s", list.Name)
@@ -21,8 +23,8 @@ func TestNewTaskList(t *testing.T) {
 }
 
 func TestNewTask(t *testing.T) {
-	list := NewTaskList("list")
-	task := NewTask(list, "task")
+	list := models.NewTaskList("list")
+	task := models.NewTask(list, "task")
 
 	if task.Name != "task" {
 		t.Errorf("Expected Task name to be task, it is: %s", task.Name)

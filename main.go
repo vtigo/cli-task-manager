@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/vtigo/cli-task-manager/internal/models"
 )
 
@@ -16,9 +17,11 @@ func main() {
 	//
 	// list1.SaveFile()
 	// list2.SaveFile()
-	//
+
 	models.LoadTaskLists()
-	models.ListTaskLists()
+	models.ListTasks()
+	task := models.GetTaskByName("task_01")
+	fmt.Println(task.Name)
 }
 
 
