@@ -2,16 +2,14 @@ package handlers
 
 import (
 	"errors"
-
-	"github.com/vtigo/cli-task-manager/internal/db"
-	"github.com/vtigo/cli-task-manager/internal/models"
 )
 
-func HandleMarkAsCompleted(index int) error {
-	if index > len(models.Tasks) {
+func HandleMarkAsCompleted(h *TaskHandler, index int) error {
+	if index > len(h.taskManager.Tasks) {
 		return errors.New("index is out of range")
 	}
-	models.Tasks[index].MarkAsCompleted()
-	db.HandleSaveLists()
+	//TODO: mark task as completed
+	// h.taskManager.[index].MarkAsCompleted()
+	// tm.HandleSaveLists()
 	return nil
 }

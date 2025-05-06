@@ -1,28 +1,26 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 
 	"github.com/vtigo/cli-task-manager/internal/db"
 	"github.com/vtigo/cli-task-manager/internal/handlers"
+	"github.com/vtigo/cli-task-manager/internal/models"
 )
 
 func main() {
-	db.HandleLoadTaskLists()
-	
-	shouldListTasks := flag.Bool("la", false, "Lists all tasks")
-	markTask := flag.Int("c", -1, " Mark task as completed")
-	flag.Parse()
-	
-	if *shouldListTasks {
-		handlers.HandleListTasks()
+	taskManager := models.NewTaskManager()
+	storage := db.NewFileStorage("storage")
+	handler := handlers.NewTaskHandler(taskManager, storage)
+
+	taskLists, err := storage.LoadAllTaskLists()
+	if err != nil {
+		fmt.Println("Failed to load task lists: ", err)
 	}
-	
-	if *markTask >= 0 {
-		err := handlers.HandleMarkAsCompleted(*markTask - 1)
-		if err != nil {
-			fmt.Println("Failed to mark task as completed: ", err)
-		}
+
+	for _, tl := range taskLists {
+		taskManager.TaskLists = append(taskManager.TaskLists, tl)
 	}
+	handler.ListTaskLists()
 }
+

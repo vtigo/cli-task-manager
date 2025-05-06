@@ -2,38 +2,39 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/vtigo/cli-task-manager/internal/models"
 )
 
-func HandleListTaskLists() {
+func (h *TaskHandler) ListTaskLists() {
 	fmt.Println("-- Task Lists --")
 	fmt.Println("----------------")
 
-	if len(models.TaskLists) == 0 {
+	if len(h.taskManager.TaskLists) == 0 {
 		fmt.Println("No Task Lists found")
 		return
 	}
 
-	for i, tl := range models.TaskLists {
-		fmt.Printf("%v - %s\n", i + 1, tl.Name)
+	for i, tl := range h.taskManager.TaskLists {
+		fmt.Printf("%v - %s\n", i+1, tl.Name)
 	}
 }
 
-func HandleListTasks() {
+func (h *TaskHandler) ListTasks() {
 	fmt.Println("-- Tasks --")
 	fmt.Println("-----------")
 	
 	cmpString := "[X]"
 	notCmpString := "[ ]"
 	
-	var statusString string
+	if len(h.taskManager.Tasks) == 0 {
+		fmt.Println("No tasks found")
+		return
+	}
 
-	for i, t := range models.Tasks { 
+	for i, t := range h.taskManager.Tasks {
+		statusString := notCmpString
 		if t.Completed {
 			statusString = cmpString
-		} else {
-			statusString = notCmpString
 		}
-		fmt.Printf("%v) %s %s\n", i + 1, statusString, t.Name)
+		fmt.Printf("%v) %s %s\n", i+1, statusString, t.Name)
 	}
 }

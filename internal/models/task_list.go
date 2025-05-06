@@ -7,9 +7,6 @@ import (
 	"path/filepath"
 )
 
-var TaskListId int
-var TaskLists []*TaskList
-
 type TaskList struct {
 	Id    int
 	Name  string
@@ -33,17 +30,4 @@ func (tl *TaskList) SaveFile() {
 	os.Mkdir("storage", os.ModePerm)
 	path := filepath.Join("storage", fmt.Sprintf("%s.json", tl.Name))
 	os.WriteFile(path, tl.Json(), 0644)
-}
-
-func NewTaskList(name string) *TaskList {
-	tl := &TaskList{
-		Id: TaskListId,
-		Name: name,
-		Tasks: nil,
-	}
-	TaskListId++
-	
-	TaskLists = append(TaskLists, tl)
-
-	return tl
 }
