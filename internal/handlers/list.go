@@ -4,12 +4,15 @@ import (
 	"fmt"
 )
 
+const (
+	completedTaskString = "[X]"
+	uncompletedTaskString = "[ ]"
+)
+
 func (h *TaskHandler) HandleListTasks() {
 	fmt.Println("-- Tasks --")
 	fmt.Println("-----------")
 	
-	cmpString := "[X]"
-	notCmpString := "[ ]"
 	
 	if len(h.taskManager.Tasks) == 0 {
 		fmt.Println("No tasks found")
@@ -17,9 +20,9 @@ func (h *TaskHandler) HandleListTasks() {
 	}
 
 	for i, t := range h.taskManager.Tasks {
-		statusString := notCmpString
+		statusString := completedTaskString
 		if t.Completed {
-			statusString = cmpString
+			statusString = uncompletedTaskString
 		}
 		fmt.Printf("%v) %s %s\n", i+1, statusString, t.Name)
 	}

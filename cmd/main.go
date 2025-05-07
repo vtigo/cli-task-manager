@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/spf13/cobra"
 	"github.com/vtigo/cli-task-manager/internal/db"
@@ -42,7 +43,48 @@ func main() {
 		},
 	}
 
-	rootCmd.AddCommand(listCmd)
+	createCmd := &cobra.Command{
+		Use: "task",
+		Short: "Create a new task",
+		Run: func(cmd *cobra.Command, args []string) {
+			handler.HandleCreateTask(args[0])
+		},
+	}
+
+	completeCmd := &cobra.Command{
+		Use: "tick",
+		Short: "Complete a task",
+		Run: func(cmd *cobra.Command, args []string) {
+			intInput, err := strconv.Atoi(args[0])
+			if err != nil {
+				fmt.Println("failed to convert task index argument to integer")
+			}
+			
+			taskIndex := intInput - 1
+			handler.HandleMarkAsCompleted(taskIndex)
+		},
+	}
+
+	deleteCmd := &cobra.Command{
+		Use: "delete",
+		Short: "Delete a task",
+		Run: func(cmd *cobra.Command, args []string) {
+			intInput, err := strconv.Atoi(args[0])
+			if err != nil {
+				fmt.Println("failed to convert task index argument to integer")
+			}
+	
+			taskIndex := intInput - 1
+			handler.HandleDeleteTask(taskIndex)
+		},
+	}
+
+	rootCmd.AddCommand(
+		listCmd,
+		createCmd,
+		completeCmd,
+		deleteCmd,
+	)
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
