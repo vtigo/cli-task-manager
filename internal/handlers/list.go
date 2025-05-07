@@ -4,21 +4,7 @@ import (
 	"fmt"
 )
 
-func (h *TaskHandler) ListTaskLists() {
-	fmt.Println("-- Task Lists --")
-	fmt.Println("----------------")
-
-	if len(h.taskManager.TaskLists) == 0 {
-		fmt.Println("No Task Lists found")
-		return
-	}
-
-	for i, tl := range h.taskManager.TaskLists {
-		fmt.Printf("%v - %s\n", i+1, tl.Name)
-	}
-}
-
-func (h *TaskHandler) ListTasks() {
+func (h *TaskHandler) HandleListTasks() {
 	fmt.Println("-- Tasks --")
 	fmt.Println("-----------")
 	
