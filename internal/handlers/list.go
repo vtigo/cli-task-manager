@@ -20,9 +20,9 @@ func (h *TaskHandler) HandleListTasks() {
 	}
 
 	for i, t := range h.taskManager.Tasks {
-		statusString := completedTaskString
+		statusString := uncompletedTaskString
 		if t.Completed {
-			statusString = uncompletedTaskString
+			statusString = completedTaskString
 		}
 		fmt.Printf("%v) %s %s\n", i+1, statusString, t.Name)
 	}
