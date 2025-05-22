@@ -6,40 +6,47 @@ import (
 	"github.com/vtigo/cli-task-manager/internal/models"
 )
 
-func TestNewTaskList(t *testing.T) {
-	list := models.NewTaskList("list")
 
-	if list.Name != "list" {
-		t.Errorf("Expected Task List name to be list, it is: %s", list.Name)
-	}
-
-	if len(list.Tasks) != 0 {
-		t.Errorf("Expected Task List length to be 0, it is: %v", len(list.Tasks))
-	}
-
-	if list.Id != 0 {
-		t.Errorf("Expected Task List id to be 0, it is: %v", list.Id)
+func TestNewTaskManager(t *testing.T) {
+	taskManager := models.NewTaskManager()
+	
+	if len(taskManager.Tasks) != 0 {
+		t.Errorf("Expected 0 tasks upon initialization, got %d", len(taskManager.Tasks))
 	}
 }
 
 func TestNewTask(t *testing.T) {
-	list := models.NewTaskList("list")
-	task := models.NewTask(list, "task")
+	taskManager := models.NewTaskManager()
+
+	task, err := taskManager.CreateTask("task")
+	if err != nil {
+		t.Errorf("Expected no error upon task creation, got %d", err)
+	}
 
 	if task.Name != "task" {
-		t.Errorf("Expected Task name to be task, it is: %s", task.Name)
+		t.Errorf("Expected task name to be task, got %s", task.Name)
 	}
 
 	if task.Completed {
-		t.Error("Expected Task to have Completed = false")
-	}
-
-	if list.Tasks[0] != *task {
-		t.Errorf("Expected Task to be added to the given list")
-	}
-
-	if task.Id != 0 {
-		t.Errorf("Expected Task id to be 0, it is: %v", task.Id)
+		t.Error("Expected task to have completed false")
 	}
 }
 
+func TestToggleTaskCompleteness(t *testing.T) {
+	taskManager := models.NewTaskManager()
+
+	task, err := taskManager.CreateTask("task")
+	if err != nil {
+		t.Errorf("Expected no error upon task creation, got %d", err)
+	}
+
+	task.ToggleCompleteness()
+	if !task.Completed {
+		t.Error("Expected task to be completed after toggling one time")
+	}
+
+	task.ToggleCompleteness()
+	if task.Completed {
+		t.Error("Expected task to not be completed after toggling the second time")
+	}
+}

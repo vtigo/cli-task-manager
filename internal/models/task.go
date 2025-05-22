@@ -6,6 +6,6 @@ type Task struct {
 	Completed bool	 `json:"completed"`
 }
 
-func (t *Task) MarkAsCompleted() {
-	t.Completed = true
+func (t *Task) ToggleCompleteness() {
+	t.Completed = !t.Completed
 }

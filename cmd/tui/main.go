@@ -68,11 +68,17 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
                 m.cursor++
             }
 
-        // The "enter" key and the spacebar (a literal space) toggle
-        // the selected state for the item that the cursor is pointing at.
+		// Toggle the completeness of the task underneath the cursor
         case "enter", " ":
-			if err := m.handler.HandleMarkAsCompleted(m.cursor); err != nil {
+			if err := m.handler.HandleToggleTaskCompleteness(m.cursor); err != nil {
 				fmt.Println("failed to mark task as completed:", err)
+				os.Exit(1)
+			}
+
+		// Delete the task underneath the cursor
+		case "d":
+			if err := m.handler.HandleDeleteTask(m.cursor); err != nil {
+				fmt.Println("failed to deled task:", err)
 				os.Exit(1)
 			}
         }
